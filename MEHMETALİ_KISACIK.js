@@ -83,6 +83,11 @@
                 <div class="product-item__price">
                   <button class="btn close-btn">Sepete Ekle</button>
                 </div>
+                <div class="heart">
+                    <img src="assets/svg/default-favorite.svg" alt="heart" class="heart-icon">
+                    <img src="assets/svg/default-hover-favorite.svg" alt="heart" class="heart-icon hovered">
+                </div>
+
               </div>
             </div>
           </div>
