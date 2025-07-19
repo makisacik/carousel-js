@@ -1,6 +1,7 @@
 /** @format */
 (() => {
-  const LOCAL_KEY = "cachedProducts";
+  const PRODUCTS_KEY = "cachedProducts";
+  const FAVORITES_KEY = "favoriteProducts";
 
   let currentIndex = 0;
 
@@ -23,14 +24,14 @@
   };
 
   const fetchProducts = async () => {
-    const cached = localStorage.getItem(LOCAL_KEY);
+    const cached = localStorage.getItem(PRODUCTS_KEY);
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed)) return parsed;
-        else localStorage.removeItem(LOCAL_KEY);
+        else localStorage.removeItem(PRODUCTS_KEY);
       } catch {
-        localStorage.removeItem(LOCAL_KEY);
+        localStorage.removeItem(PRODUCTS_KEY);
       }
     }
 
@@ -43,12 +44,35 @@
         console.error("Fetched data is not an array:", data);
         return [];
       }
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(data));
       return data;
     } catch (err) {
       console.error("Failed to fetch product data:", err);
       return [];
     }
+  };
+
+  const fetchFavorites = () => {
+    const favorites = localStorage.getItem(FAVORITES_KEY);
+
+    if (!favorites) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify([]));
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(favorites);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
+
+      localStorage.removeItem(LOCAL_KEY);
+    } catch (error) {
+      console.error("Failed to parse favorites:", error);
+      localStorage.removeItem(LOCAL_KEY);
+    }
+
+    return [];
   };
 
   const buildHTML = (products) => {
@@ -83,7 +107,7 @@
                 <div class="product-item__price">
                   <button class="btn close-btn">Sepete Ekle</button>
                 </div>
-                <div class="heart">
+                <div class="heart" data-product-id="${product.id}">
                     <img src="assets/svg/default-favorite.svg" alt="heart" class="heart-icon">
                     <img src="assets/svg/default-hover-favorite.svg" alt="heart" class="heart-icon hovered">
                 </div>
@@ -167,9 +191,9 @@
     const updateCarouselView = () => {
       updateCardWidths();
       const items = carousel.querySelectorAll(".carousel-item");
-      items.forEach((item, i) => {
+      items.forEach((item, index) => {
         item.style.display =
-          i >= currentIndex && i < currentIndex + visibleCards
+          index >= currentIndex && index < currentIndex + visibleCards
             ? "block"
             : "none";
       });
