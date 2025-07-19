@@ -18,6 +18,7 @@
     }
 
     buildHTML(products);
+    buildCSS();
   };
 
   const fetchProducts = async () => {
@@ -55,7 +56,7 @@
     );
 
     if (!storiesDiv) {
-      console.error("Stories div not found.");
+      console.error("Stories div  doesn't exist");
       return;
     }
 
@@ -109,6 +110,26 @@
       </div>`;
 
     storiesDiv.insertAdjacentHTML("afterend", htmlString);
+  };
+
+  const buildCSS = () => {
+    const css = `
+    .carousel-wrapper {
+      position: relative;
+      left: 0;
+      top: 0;
+      display: flex;
+      overflow: hidden;
+      gap: 12px;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+    }
+  `;
+    const styleTag = document.createElement("style");
+    styleTag.textContent = css;
+    document.head.appendChild(styleTag);
   };
 
   init();
