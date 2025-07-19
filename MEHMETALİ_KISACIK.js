@@ -11,11 +11,20 @@
       return;
     }
 
-    const products = await fetchProducts();
+    let products = await fetchProducts();
 
     if (products.length === 0) {
       console.error("No products found");
       return;
+    }
+
+    const favorites = fetchFavorites();
+
+    if (favorites.length > 0) {
+      products = products.map((product) => ({
+        ...product,
+        isFavorite: favorites.includes(product.id),
+      }));
     }
 
     buildHTML(products);
@@ -90,16 +99,24 @@
         (product) => `
           <div class="carousel-item">
             <div class="product-item">
-              <a href="${product.url}" target="_blank" class="product-item-anchor">
+              <a href="${
+                product.url
+              }" target="_blank" class="product-item-anchor">
                 <figure class="product-item-image">
                   <img src="${product.img}" alt="${product.name}">
                 </figure>
                 <div class="product-item-content">
-                  <a href="${product.url}" target="_blank" class="product-item-anchor">
-                    <h2 class="product-item__brand ng-star-inserted"><b> ${product.brand} - </b><span> ${product.name} </span></h2>
+                  <a href="${
+                    product.url
+                  }" target="_blank" class="product-item-anchor">
+                    <h2 class="product-item__brand ng-star-inserted"><b> ${
+                      product.brand
+                    } - </b><span> ${product.name} </span></h2>
                   </a>
                   <div class="product-item__price">
-                    <span class="product-item__new-price">${product.price} TL</span>
+                    <span class="product-item__new-price">${
+                      product.price
+                    } TL</span>
                   </div>
                 </div>
               </a>
@@ -108,10 +125,15 @@
                   <button class="btn close-btn">Sepete Ekle</button>
                 </div>
                 <div class="heart" data-product-id="${product.id}">
-                    <img src="assets/svg/default-favorite.svg" alt="heart" class="heart-icon">
-                    <img src="assets/svg/default-hover-favorite.svg" alt="heart" class="heart-icon hovered">
+                <img src="assets/svg/${
+                  product.isFavorite ? "added-favorite" : "default-favorite"
+                }.svg" alt="heart" class="heart-icon">
+                <img src="assets/svg/${
+                  product.isFavorite
+                    ? "added-favorite-hover"
+                    : "default-hover-favorite"
+                }.svg" alt="heart" class="heart-icon hovered">
                 </div>
-
               </div>
             </div>
           </div>
@@ -228,7 +250,7 @@
       heart.addEventListener("click", () => {
         const favorites = fetchFavorites();
 
-        const productId = heart.dataset.productId;
+        const productId = Number(heart.dataset.productId);
         const isFavorite = favorites.includes(productId);
 
         if (isFavorite) {
@@ -247,7 +269,10 @@
           heart.querySelector(".hovered").src =
             "assets/svg/added-favorite-hover.svg";
 
-          localStorage.setItem(FAVORITES_KEY, JSON.stringify([favorites]));
+          localStorage.setItem(
+            FAVORITES_KEY,
+            JSON.stringify([...favorites, productId])
+          );
         }
       });
     });
