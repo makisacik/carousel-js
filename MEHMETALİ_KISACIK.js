@@ -13,12 +13,13 @@
     const products = await fetchProducts();
 
     if (products.length === 0) {
-      console.error("No products found.");
+      console.error("No products found");
       return;
     }
 
     buildHTML(products);
     buildCSS();
+    setEvents(products);
   };
 
   const fetchProducts = async () => {
@@ -130,6 +131,68 @@
     const styleTag = document.createElement("style");
     styleTag.textContent = css;
     document.head.appendChild(styleTag);
+  };
+
+  const setEvents = (products) => {
+    const productCarousel = document.querySelector(".product-carousel");
+    const leftBtn = productCarousel.querySelector(".swiper-prev");
+    const rightBtn = productCarousel.querySelector(".swiper-next");
+    const carousel = document.querySelector(".carousel");
+    const totalProducts = products.length;
+
+    const calculateVisibleCards = () => {
+      const width = window.innerWidth;
+      if (width >= 1480) return 5;
+      if (width >= 1280) return 4;
+      if (width >= 992) return 3;
+      return 2;
+    };
+
+    let visibleCards = calculateVisibleCards();
+
+    const updateCardWidths = () => {
+      visibleCards = calculateVisibleCards();
+      const cardWidth =
+        (carousel.clientWidth - (visibleCards - 1) * 12) / visibleCards;
+      carousel.querySelectorAll(".carousel-item").forEach((item) => {
+        item.style.width = `${cardWidth}px`;
+      });
+    };
+
+    const updateCarouselView = () => {
+      updateCardWidths();
+      const items = carousel.querySelectorAll(".carousel-item");
+      items.forEach((item, i) => {
+        item.style.display =
+          i >= currentIndex && i < currentIndex + visibleCards
+            ? "block"
+            : "none";
+      });
+    };
+
+    updateCarouselView();
+
+    rightBtn.addEventListener("click", () => {
+      if (currentIndex + visibleCards < totalProducts) {
+        currentIndex++;
+        updateCarouselView();
+      }
+    });
+
+    leftBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarouselView();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      const newVisible = calculateVisibleCards();
+      if (newVisible !== visibleCards) {
+        currentIndex = 0;
+      }
+      updateCarouselView();
+    });
   };
 
   init();
