@@ -222,6 +222,35 @@
       }
       updateCarouselView();
     });
+    const hearts = productCarousel.querySelectorAll(".heart");
+
+    hearts.forEach((heart) => {
+      heart.addEventListener("click", () => {
+        const favorites = fetchFavorites();
+
+        const productId = heart.dataset.productId;
+        const isFavorite = favorites.includes(productId);
+
+        if (isFavorite) {
+          heart.dataset.isFavorite = "false";
+          heart.querySelector(".heart-icon").src =
+            "assets/svg/default-favorite.svg";
+          heart.querySelector(".hovered").src =
+            "assets/svg/default-hover-favorite.svg";
+
+          const updatedFavorites = favorites.filter((id) => id !== productId);
+          localStorage.setItem(FAVORITES_KEY, JSON.stringify(updatedFavorites));
+        } else {
+          heart.dataset.isFavorite = "true";
+          heart.querySelector(".heart-icon").src =
+            "assets/svg/added-favorite.svg";
+          heart.querySelector(".hovered").src =
+            "assets/svg/added-favorite-hover.svg";
+
+          localStorage.setItem(FAVORITES_KEY, JSON.stringify([favorites]));
+        }
+      });
+    });
   };
 
   init();
