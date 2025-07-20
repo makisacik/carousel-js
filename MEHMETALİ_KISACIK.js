@@ -113,11 +113,32 @@
                       product.brand
                     } - </b><span> ${product.name} </span></h2>
                   </a>
-                  <div class="product-item__price">
-                    <span class="product-item__new-price">${
-                      product.price
-                    } TL</span>
-                  </div>
+                    <div class="product-item__price">
+                    ${
+                      product.original_price > product.price
+                        ? `
+                        <div class="product-item__price-wrapper d-flex align-items-center">
+                            <span class="product-item__old-price">${
+                              product.original_price
+                            } TL</span>
+                            <span class="product-item__percent">
+                            <i class="icon icon-decrease"></i>
+                            %${Math.round(
+                              ((product.original_price - product.price) /
+                                product.original_price) *
+                                100
+                            )}
+                            </span>
+                        </div>
+                        <span class="product-item__new-price">${
+                          product.price
+                        } TL</span>
+                        `
+                        : `
+                        <span class="product-item__new-price">${product.price} TL</span>
+                        `
+                    }
+                    </div>
                 </div>
               </a>
               <div class="product-item-content">
@@ -244,6 +265,7 @@
       }
       updateCarouselView();
     });
+
     const hearts = productCarousel.querySelectorAll(".heart");
 
     hearts.forEach((heart) => {
