@@ -191,6 +191,10 @@
 
   const buildCSS = () => {
     const css = `
+    .carousel {
+        overflow: hidden;
+    }
+
     .carousel-wrapper {
       position: relative;
       left: 0;
@@ -198,6 +202,10 @@
       display: flex;
       overflow: hidden;
       gap: 12px;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      overflow: hidden;
+
     }
 
     .carousel-item {
@@ -237,13 +245,15 @@
 
     const updateCarouselView = () => {
       updateCardWidths();
-      const items = carousel.querySelectorAll(".carousel-item");
-      items.forEach((item, index) => {
-        item.style.display =
-          index >= currentIndex && index < currentIndex + visibleCards
-            ? "block"
-            : "none";
-      });
+
+      const wrapper = carousel.querySelector(".carousel-wrapper");
+      const items = wrapper.querySelectorAll(".carousel-item");
+      const itemWidth = items[0].offsetWidth + 12;
+
+      wrapper.style.width = `${itemWidth * totalProducts}px`;
+
+      const offset = currentIndex * itemWidth;
+      wrapper.style.transform = `translateX(-${offset}px)`;
     };
 
     updateCarouselView();
