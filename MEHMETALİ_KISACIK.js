@@ -122,15 +122,15 @@
                               product.original_price
                             } TL</span>
                             <span class="product-item__percent">
-                            <i class="icon icon-decrease"></i>
                             %${Math.round(
                               ((product.original_price - product.price) /
                                 product.original_price) *
                                 100
                             )}
+                            <i class="icon icon-decrease"></i>
                             </span>
                         </div>
-                        <span class="product-item__new-price">${
+                        <span class="product-item__new-price discount-product">${
                           product.price
                         } TL</span>
                         `
