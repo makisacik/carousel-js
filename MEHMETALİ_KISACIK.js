@@ -142,6 +142,8 @@
                 </div>
               </a>
               <div class="product-item-content">
+                              <div class="product-list-promo ng-star-inserted">
+                </div>
                 <div class="product-item__price">
                   <button class="btn close-btn">Sepete Ekle</button>
                 </div>
