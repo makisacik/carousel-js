@@ -148,9 +148,11 @@
                   <button class="btn close-btn">Sepete Ekle</button>
                 </div>
                 <div class="heart" data-product-id="${product.id}">
-                <img src="assets/svg/${
-                  product.isFavorite ? "added-favorite" : "default-favorite"
-                }.svg" alt="heart" class="heart-icon">
+                <img ${
+                  product.isFavorite ? "" : 'id="default-favorite" '
+                } src="assets/svg/${
+          product.isFavorite ? "added-favorite" : "default-favorite"
+        }.svg" alt="heart" class="heart-icon">
                 <img src="assets/svg/${
                   product.isFavorite
                     ? "added-favorite-hover"
