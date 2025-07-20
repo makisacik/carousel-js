@@ -109,7 +109,7 @@
                   <a href="${
                     product.url
                   }" target="_blank" class="product-item-anchor">
-                    <h2 class="product-item__brand ng-star-inserted"><b> ${
+                    <h2 class="product-item__brand"><b> ${
                       product.brand
                     } - </b><span> ${product.name} </span></h2>
                   </a>
