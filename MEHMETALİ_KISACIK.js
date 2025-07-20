@@ -149,7 +149,7 @@
                 </div>
                 <div class="heart" data-product-id="${product.id}">
                 <img ${
-                  product.isFavorite ? "" : 'id="default-favorite" '
+                  product.isFavorite ? "" : 'id="default-favorite"'
                 } src="assets/svg/${
           product.isFavorite ? "added-favorite" : "default-favorite"
         }.svg" alt="heart" class="heart-icon">
@@ -281,8 +281,11 @@
 
         if (isFavorite) {
           heart.dataset.isFavorite = "false";
+          heart.querySelector(".heart-icon").id = "default-favorite";
           heart.querySelector(".heart-icon").src =
             "assets/svg/default-favorite.svg";
+
+          heart.querySelector(".hovered").id = "";
           heart.querySelector(".hovered").src =
             "assets/svg/default-hover-favorite.svg";
 
@@ -290,8 +293,11 @@
           localStorage.setItem(FAVORITES_KEY, JSON.stringify(updatedFavorites));
         } else {
           heart.dataset.isFavorite = "true";
+          heart.querySelector(".heart-icon").id = "";
+
           heart.querySelector(".heart-icon").src =
             "assets/svg/added-favorite.svg";
+          heart.querySelector(".hovered").id = "";
           heart.querySelector(".hovered").src =
             "assets/svg/added-favorite-hover.svg";
 
