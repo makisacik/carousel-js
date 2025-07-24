@@ -85,9 +85,7 @@
   };
 
   const buildHTML = (products) => {
-    const storiesDiv = document.querySelector(
-      ".ins-preview-wrapper.ins-preview-wrapper-27158"
-    );
+    const storiesDiv = document.querySelector(".ins-preview-wrapper");
 
     if (!storiesDiv) {
       console.error("Stories div  doesn't exist");
